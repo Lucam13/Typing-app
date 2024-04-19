@@ -1,0 +1,117 @@
+<title> Typing app </title>
+
+<style> 
+    :root {
+        color-scheme: light dark;
+        --green: #00b755;
+        --yellow: #daaf38;
+        --red: #ca4754;
+        --black: #222;
+        --gray: #999;
+    }
+
+    body {
+        background: var(--black);
+        font-family: Menlo, monospace;
+        display:grid;   
+        padding: 32px;
+        justify-content: center;
+        margin-top: 32px;
+        padding: 16px;
+    }
+
+    section {
+        padding: 16px;   
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 500px;
+    }
+
+    time {
+        color: var(--yellow)
+    }
+
+    input {
+        z-index: -999;
+        position: absolute;
+        top:0;
+        left:0;
+        pointer-events: none;
+    }
+
+    p {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px 8px;
+    }
+</style>
+
+<body>
+    <main> 
+        <section id="game">
+            <time></time>
+            <p></p>
+            <input autofocus>
+        </section>
+
+    </main>
+</body>
+
+<script>
+    const time = document.querySelector('time');
+    const paragraph = document.querySelector('p');
+    const input = document.querySelector('input');
+
+    const INITIAL_TIME = 30;
+
+    const TEXT = 'The quick brown fox jumps over the lazy dog and the lazy dog barks at the quick brown fox.';
+
+    let words = []
+    let currentTime = INITIAL_TIME;
+
+// puedo declarar una funcion y llamarla en el momento que la necesite, por que este antes por que la invocacion esta en todo el scope.
+
+
+    initGame()
+    initEvents()
+
+    function initGame(){
+        words = TEXT.split(' ').slice(0, 32);
+        currentTime = INITIAL_TIME;
+
+        time.textContent = currentTime;
+
+        paragraph.innerHTML = words.map((word, index) =>{
+            const letters = word.split('');
+
+            return ` <word>
+                ${
+                    letters.map(letter => `<letter>${letter}</letter>`).join('')
+                }
+                
+                </word>
+                `
+        }).join('')
+        
+        const intervalId = setInterval(() => {
+            currentTime--
+            time.textContent = currentTime;
+
+            if (currentTime === 0) {
+                clearInterval(intervalId)
+                gameOver()
+            }
+        }, 1000)
+
+    }
+
+    function initEvents(){}
+
+    function gameOver(){
+        console.log('Game over')
+    }
+
+
+
+</script>
